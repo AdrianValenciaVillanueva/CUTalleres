@@ -87,7 +87,7 @@ export default {
       workshops: [
         {
           name: 'Taller de Teatro',
-          icon: require('../assets/theater-icon.png'), // Asegúrate de tener esta imagen
+          //icon: require('../assets/theater-icon.png'), // Asegúrate de tener esta imagen
           date: '10/03/2023',
           inscriptionType: 'Presencial',
           status: 'Activo',
@@ -95,7 +95,7 @@ export default {
         },
         {
           name: 'Curso de Oratoria',
-          icon: require('../assets/speech-icon.png'), // Asegúrate de tener esta imagen
+          //icon: require('../assets/speech-icon.png'), // Asegúrate de tener esta imagen
           date: '20/02/2023',
           inscriptionType: 'Virtual',
           status: 'Finalizado',

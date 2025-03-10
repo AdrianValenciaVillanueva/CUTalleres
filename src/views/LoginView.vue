@@ -4,7 +4,7 @@
     
     <div class="login-content">
       <div class="login-image">
-        <img src="../assets/teatro-masks.jpg" alt="Máscaras de teatro" />
+        <img src="../assets/LoginIMG.png" alt="Máscaras de teatro" />
       </div>
       
       <div class="login-form">

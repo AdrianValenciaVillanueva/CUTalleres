@@ -88,7 +88,7 @@
       </div>
       
       <div class="register-image">
-        <img src="../assets/education-icon.jpg" alt="Icono educativo" />
+        <img src="../assets/RegisterIMG.png" alt="Icono educativo" />
       </div>
     </div>
   </div>

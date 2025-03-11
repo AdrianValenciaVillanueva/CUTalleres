@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <h1 class="main-title">TALLERES</h1>
+    <img src="@/assets/CutalleresLogo.png" alt="Talleres" style="width: 40rem; margin-bottom: 2rem; margin:auto;" />
     <h3 class="subtitle">Plataforma para el registro de talleres</h3>
     
     <div class="buttons-container">
@@ -26,8 +26,18 @@ export default {
 </script>
 
 <style scoped>
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
 .home-container {
-  max-width: 800px;
+  max-width: 85%;
+  max-height: 200vh;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -41,6 +51,10 @@ export default {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
   font-weight: bold;
+}
+
+img:hover{
+  animation: shake 0.3s ease-in-out;
 }
 
 .subtitle {
@@ -57,14 +71,19 @@ export default {
 
 .button-box {
   background-color: white;
-  padding: 1.5rem;
+  padding: 0;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 200px;
+  /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+  width: 250px;
+  height: 100px;
+  align-content: center;
 }
 
+
+
 .home-button {
-  width: 100%;
+  width: 200px;
+  height: 3rem;
   padding: 0.75rem;
   background-color: #3498db;
   color: white;
@@ -76,9 +95,22 @@ export default {
 
 .home-button:hover {
   background-color: #2980b9;
+  width: 100%;
+  height:100%;
+  transition: width 0.5s ease, height 0.2s ease 0.5s;
 }
+
+.home-button:not(:hover) {
+  background-color: #2980b9;
+  width: 200px;
+  height: 3rem;
+  transition: width 0.5s ease, height 0.2s ease 0.5s;
+}
+
 
 .button-link {
   text-decoration: none;
 }
+
+
 </style>

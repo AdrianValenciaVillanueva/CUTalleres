@@ -1,12 +1,6 @@
 <template>
   <div class="profile-container">
-    <div class="profile-header">
-      <h2>PERFIL DE USUARIO</h2>
-      <div class="profile-actions">
-        <button class="btn-edit">Editar</button>
-        <button class="btn-logout" @click="logout">Salir</button>
-      </div>
-    </div>
+    <header-component></header-component> 
     
     <div class="profile-content">
       <div class="profile-info">
@@ -70,10 +64,13 @@
       </div>
     </div>
   </div>
+  <footer-component></footer-component>
 </template>
 
 <script>
+import HeaderComponent from '@/components/HeaderComponent.vue'
 export default {
+  components: { HeaderComponent },
   name: 'ProfileView',
   data() {
     return {

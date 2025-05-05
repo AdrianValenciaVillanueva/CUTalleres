@@ -1,21 +1,5 @@
 <template>
   <div class="talleres-app">
-    <header class="header">
-      <div class="logo-container">
-        <img src="logo.png" alt="Talleres Logo" class="logo" />
-      </div>
-      <nav class="navigation">
-        <a href="#" class="nav-link">Lista de talleres</a>
-        <a href="#" class="nav-link dropdown">
-          Mis talleres
-          <span class="dropdown-arrow">▼</span>
-        </a>
-        <a href="#" class="nav-link dropdown">
-          Perfil
-          <span class="dropdown-arrow">▼</span>
-        </a>
-      </nav>
-    </header>
 
     <main class="main-content">
       <section class="taller-management">

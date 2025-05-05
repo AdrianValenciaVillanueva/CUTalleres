@@ -1,4 +1,5 @@
 <template>
+<HeaderComponent></HeaderComponent>
     <div>
       <h1></h1>
       <PerfilEstudiante />
@@ -7,9 +8,14 @@
   
   <script>
   import PerfilEstudiante from '../components/PerfilEstudiante.vue'
+  import HeaderComponent from '../components/HeaderComponent.vue'
   
   export default {
-    components: { PerfilEstudiante }
+    components: { 
+      PerfilEstudiante,
+      HeaderComponent,
+
+     }
   }
   </script>
   

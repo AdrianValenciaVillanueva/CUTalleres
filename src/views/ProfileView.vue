@@ -1,6 +1,6 @@
 <template>
+  <HeaderComponent></HeaderComponent>
   <div class="profile-container">
-    <header-component></header-component> 
     
     <div class="profile-content">
       <div class="profile-info">

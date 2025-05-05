@@ -53,15 +53,26 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      staticUser:{
+        email:'usuario@example.com',
+        password:'123456'
+      }
     }
   },
   methods: {
     submitLogin() {
-      // Aquí iría la lógica para el inicio de sesión
-      console.log('Iniciando sesión con:', this.email, this.password)
-      // Después de la validación exitosa, redirigir al perfil
-      this.$router.push('/profile')
+      // Validar las credenciales ingresadas
+      if (this.email === this.staticUser.email && this.password === this.staticUser.password) {
+        console.log('Inicio de sesión exitoso');
+        this.errorMessage = '';
+        // Redirigir al perfil después de la validación exitosa
+        this.$router.push('/profile');
+      } else {
+        // Mostrar mensaje de error si las credenciales no coinciden
+        this.errorMessage = 'Correo o contraseña incorrectos';
+        console.error('Error de inicio de sesión');
+      }
     }
   }
 }

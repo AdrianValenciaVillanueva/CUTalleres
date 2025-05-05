@@ -1,16 +1,5 @@
 <template>
   <div class="profile-container">
-    <!-- Header -->
-    <header class="header">
-      <div class="logo">
-        <img src="C:\Users\pablo\proyectokratos\src\assets\Cutalleres logo prototipo naranja-azul sin fondo 1.png" alt="CTalleres Logo" />
-      </div>
-      <div class="nav-links">
-        <a href="#" class="nav-link">Lista de talleres</a>
-        <div class="divider"></div>
-        <a href="#" class="nav-link">Perfil <span class="dropdown-arrow">▼</span></a>
-      </div>
-    </header>
 
     
     <main class="content">
@@ -75,7 +64,7 @@
             <tr>
               <td>
                 <div class="workshop-name">
-                  <img src="C:\Users\pablo\proyectokratos\src\assets\Group.png" alt="Futbol" class="workshop-icon" />
+                  <img src="@/assets/Group.png" alt="Futbol" class="workshop-icon" />
                   <span>Futbol</span>
                 </div>
               </td>
@@ -89,7 +78,7 @@
             <tr>
               <td>
                 <div class="workshop-name">
-                  <img src="C:\Users\pablo\proyectokratos\src\assets\Group.png" alt="Pintura" class="workshop-icon" />
+                  <img src="@/assets/Group.png" alt="Pintura" class="workshop-icon" />
                   <span>Pintura</span>
                 </div>
               </td>

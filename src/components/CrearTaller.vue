@@ -1,17 +1,5 @@
 <template>
   <div class="crear-taller-container">
-    <header class="header">
-      <div class="logo">
-        <img src="@/assets/Cutalleres logo prototipo naranja-azul sin fondo 1.png" alt="CTalleres Logo" />
-      </div>
-      <div class="nav-links">
-        <a href="#" class="nav-link">Lista de talleres</a>
-        <div class="divider"></div>
-        <a href="#" class="nav-link">Mis talleres <span class="dropdown-arrow">▾</span></a>
-        <div class="divider"></div>
-        <a href="#" class="nav-link">Perfil <span class="dropdown-arrow">▾</span></a>
-      </div>
-    </header>
 
     <main class="content">
       <h1 class="section-title">CREAR TALLER</h1>

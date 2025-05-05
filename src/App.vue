@@ -2,7 +2,7 @@
   <div id="app">
     <router-view v-slot="{ Component }">
       <transition name="slide" mode="out-in">
-      <component :is="Component" />
+        <component :is="Component" />
       </transition>
     </router-view>
   </div>
@@ -11,7 +11,9 @@
 <style>
 #app {
   font-family: Arial, sans-serif;
-  padding: 20px;
+  padding: 0;
+  margin: 0;
+  background-color: var(--background-color);
 }
 
 /* Animación de desvanecimiento */

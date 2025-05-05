@@ -1,7 +1,8 @@
 <template>
-  <div class="login-container">
-    <h2 class="login-title">Inicio de Sesión</h2>
-    
+  <div class="main-container">
+    <unlog-header></unlog-header>
+    <div class="login-container">
+      <h2 class="login-title">Inicio de Sesión</h2>  
     <div class="login-content">
       <div class="login-image">
         <img src="../assets/LoginIMG.png" alt="Máscaras de teatro" />
@@ -41,6 +42,8 @@
         </form>
       </div>
     </div>
+    </div>
+    <footer-component></footer-component>
   </div>
 </template>
 
@@ -66,10 +69,13 @@ export default {
 
 <style scoped>
 .login-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #f5f5f5;
+  max-width: 85%;
+  max-height: 75%;
+  width: 100%;
+  height: 65%;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: var(--secondary-color);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -83,7 +89,7 @@ export default {
 
 .login-content {
   display: flex;
-  background-color: white;
+  background-color: var(--secondary-color);
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -95,7 +101,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0;
+  background-color: var(--secondary-color);
 }
 
 .login-image img {
@@ -116,7 +122,7 @@ label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: bold;
-  color: #546e7a;
+  color: var(--primary-color);
 }
 
 input {
@@ -134,7 +140,7 @@ input {
 .btn-login {
   width: 100%;
   padding: 0.75rem;
-  background-color: #3498db;
+  background-color: var(--primary-color);
   color: white;
   border: none;
   border-radius: 4px;
@@ -144,7 +150,7 @@ input {
 }
 
 .btn-login:hover {
-  background-color: #2980b9;
+  background-color: var(--background-color);
 }
 
 .form-links {

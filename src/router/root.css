@@ -1,0 +1,22 @@
+* {
+  transition: background-color 2s ease, color 0.3s ease, border-color 0.3s ease;
+}
+:root {
+  --background-color: #1f5711;
+  --text-color: #7dc47d;
+  --primary-color: #35971d;
+  --secondary-color: #fff0a4;
+  font-size: 17px;
+}
+
+[data-theme="dark"] {
+  --background-color: #001b11;
+  --text-color: #345f1a;
+  --primary-color: #013220;
+  --secondary-color: #8de27a;
+}
+  
+[data-theme="dark"] img{
+  background-image: url('https://cdn.discordapp.com/attachments/1121234567890123456/1234567890123456789/dark-theme-background.png');
+}
+

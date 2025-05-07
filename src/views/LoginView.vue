@@ -75,7 +75,12 @@ export default {
         // Guardar token y usuario si es necesario
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
-        this.$router.push('/profile');
+        // Redirigir según el rol
+        if (data.user.rol === 'admin') {
+          this.$router.push('/adminhome');
+        } else {
+          this.$router.push('/profile');
+        }
       } catch (error) {
         this.errorMessage = 'Código o contraseña incorrectos';
         console.error('Error de inicio de sesión', error);

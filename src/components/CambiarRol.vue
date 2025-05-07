@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1 class="title">Cambio de rol</h1>
-        <label for="userId" class="label">Ingresa el ID del usuario</label>
+        <label for="userId" class="label">Ingresa el código UDG del usuario</label>
         <input
             type="text"
             id="userId"
@@ -23,23 +23,22 @@ export default {
     name: "CambioRol",
     data() {
         return {
-            userId: '', //variable que almacena el ID del usuario
+            userId: '', // variable que almacena el código UDG del usuario
         };
     },
     methods: {
         async cambiarRol() {
             if (!this.userId) {
-                //Si no se ingresa un ID, muestra una alerta de error
                 await Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Por favor ingresa el ID del usuario.',
+                    text: 'Por favor ingresa el código UDG del usuario.',
                 });
             } else {
                 const result = await Swal.fire({
                     icon: 'warning',
                     title: '¿Estás seguro?',
-                    text: `¿Deseas cambiar el rol del usuario con ID ${this.userId} de estudiante a tallerista?`,
+                    text: `¿Deseas cambiar el rol del usuario con código UDG ${this.userId} de estudiante a tallerista?`,
                     showCancelButton: true,
                     confirmButtonText: 'Sí',
                     cancelButtonText: 'Cancelar',
@@ -47,15 +46,21 @@ export default {
 
                 if (result.isConfirmed) {
                     try {
-                        const response = await axios.patch('Aqui ira el metodo de Adrian', {
-                            ID_Usuario: this.userId, //Pasar el ID del usuario en el cuerpo de la solicitud.
-                        });
+                        const token = localStorage.getItem('token');
+                        const response = await axios.patch(
+                            'http://localhost:3001/users/roleChange',
+                            { codigo_udg: Number(this.userId) },
+                            {
+                                headers: {
+                                    Authorization: `Bearer ${token}`
+                                }
+                            }
+                        );
                         await Swal.fire({
                             icon: 'success',
                             title: 'Rol cambiado',
-                            text: `El rol del usuario con ID ${this.userId} ha sido cambiado con éxito.`,
+                            text: response.data.message || `El rol del usuario con código UDG ${this.userId} ha sido cambiado con éxito.`,
                         });
-                        //Solo limpia el textfield
                         this.userId = '';
                     } catch (error) {
                         await Swal.fire({

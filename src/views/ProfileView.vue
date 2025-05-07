@@ -6,26 +6,26 @@
     <div class="profile-content">
       <div class="profile-info">
         <div class="info-section">
-          <h3>Datos Personales</h3>
+          <h3>Datos Personaless</h3>
           <div class="info-row">
             <div class="info-label">Nombre:</div>
-            <div class="info-value">{{ user.name }}</div>
+            <div class="info-value">{{ user?.info?.nombre || 'No disponible' }}</div>
           </div>
           <div class="info-row">
             <div class="info-label">Correo electrónico:</div>
-            <div class="info-value">{{ user.email }}</div>
+            <div class="info-value">{{ user?.correo || 'No disponible' }}</div>
           </div>
           <div class="info-row">
             <div class="info-label">Tipo:</div>
-            <div class="info-value">{{ user.type }}</div>
+            <div class="info-value">{{ user?.rol || 'No disponible'}}</div>
           </div>
           <div class="info-row">
-            <div class="info-label">Instituto/Organización:</div>
-            <div class="info-value">{{ user.organization }}</div>
+            <div class="info-label">Codigo UDG:</div>
+            <div class="info-value">{{ user?.codigo_udg || 'No disponible' }}</div>
           </div>
           <div class="info-row">
-            <div class="info-label">Teléfono:</div>
-            <div class="info-value">{{ user.phone }}</div>
+            <div class="info-label">sexo:</div>
+            <div class="info-value">{{ user?.info?.sexo || 'No disponible' }}</div>
           </div>
         </div>
         
@@ -75,13 +75,7 @@ export default {
   name: 'ProfileView',
   data() {
     return {
-      user: {
-        name: 'Juan Carlos Rodríguez',
-        email: 'jcarlos@ejemplo.edu.mx',
-        type: 'Estudiante',
-        organization: 'Universidad Tecnológica',
-        phone: '555-123-4567'
-      },
+      user: null,
       workshops: [
         {
           name: 'Taller de Teatro',
@@ -102,6 +96,12 @@ export default {
       ]
     }
   },
+  mounted() {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      this.user = JSON.parse(userData);
+    }
+  },
   methods: {
     logout() {
       // Lógica para cerrar sesión
@@ -114,7 +114,7 @@ export default {
 <style scoped>
 .profile-container {
   max-width: 1000px;
-  margin:  1rem auto;
+  margin: 0 auto;
   padding: 1.5rem;
   background-color: #f5f5f5;
   border-radius: 10px;
@@ -128,6 +128,7 @@ export default {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid #ddd;
+  margin-top:0 ;
 }
 
 .profile-header h2 {

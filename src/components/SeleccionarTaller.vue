@@ -1,17 +1,20 @@
 <template>
   <div class="seleccion-taller-container">
     <main class="content">
-      <h1 class="section-title">SELECCION DE TALLER</h1>
+      <h1 class="section-title">LISTA DE TALLERES</h1>
 
       <div class="taller-cards-container">
-        <TallerCard v-for="taller in talleres" :key="taller.id" :taller="taller"
-          @seleccionarTaller="mostrarTallerInfo" />
+        <TallerCard
+          v-for="taller in talleres"
+          :key="taller.id"
+          :taller="taller"
+          @seleccionarTaller="mostrarTallerInfo"
+        />
 
         <!-- TallerInfoCard flotante -->
         <div v-if="tallerSeleccionado" class="taller-info-overlay" @click.self="cerrarTallerInfo">
           <TallerInfoCard :taller="tallerSeleccionado" class="taller-info-card" />
         </div>
-
       </div>
     </main>
   </div>
@@ -21,7 +24,9 @@
 import router from '@/router';
 import TallerCard from './TallerCard.vue';
 import TallerInfoCard from './TallerInfoCard.vue';
-import { ref } from 'vue';
+import { ref, onMounted} from 'vue';
+import axios from 'axios';
+
 export default {
   name: 'SeleccionTaller',
   components: {
@@ -29,130 +34,32 @@ export default {
     TallerInfoCard
   },
   setup() {
-    const talleres = ref([
-      {
-        id: 1,
-        nombre: 'Taller de Programación',
-        horario: 'Lunes y Miércoles 10:00 - 12:00',
-        descripcion: 'Aprende a programar desde cero con ejercicios prácticos.',
-        diaInicio: '01/06/2025',
-        tallerista: 'Juan Pérez',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: [
-          { id: 1, usuario: 'Ana', texto: 'Excelente taller, aprendí mucho.' },
-          { id: 2, usuario: 'Luis', texto: 'Muy recomendado.' }
-        ]
-      },
-      {
-        id: 2,
-        nombre: 'Taller de Diseño Gráfico',
-        horario: 'Martes y Jueves 14:00 - 16:00',
-        descripcion: 'Explora las herramientas de diseño gráfico más populares.',
-        diaInicio: '02/06/2025',
-        tallerista: 'Ana López',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: [
-          { id: 1, usuario: 'Carlos', texto: 'Me encantó el enfoque práctico.' }
-        ]
-      },
-      {
-        id: 3,
-        nombre: 'Taller de Fotografía',
-        horario: 'Viernes 09:00 - 11:00',
-        descripcion: 'Domina las técnicas básicas de fotografía.',
-        diaInicio: '03/06/2025',
-        tallerista: 'Carlos Gómez',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: []
-      },
-      {
-        id: 4,
-        nombre: 'Taller de Cocina',
-        horario: 'Sábados 10:00 - 12:00',
-        descripcion: 'Aprende a cocinar platos deliciosos y saludables.',
-        diaInicio: '04/06/2025',
-        tallerista: 'María Fernández',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: [
-          { id: 1, usuario: 'Laura', texto: 'Las recetas son fáciles de seguir.' }
-        ]
-      },
-      {
-        id: 5,
-        nombre: 'Taller de Música',
-        horario: 'Domingos 11:00 - 13:00',
-        descripcion: 'Descubre los fundamentos de la música y aprende a tocar instrumentos.',
-        diaInicio: '05/06/2025',
-        tallerista: 'Pedro Martínez',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: []
-      },
-      {
-        id: 6,
-        nombre: 'Taller de Pintura',
-        horario: 'Lunes y Miércoles 15:00 - 17:00',
-        descripcion: 'Explora tu creatividad con técnicas de pintura.',
-        diaInicio: '06/06/2025',
-        tallerista: 'Sofía Ramírez',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: [
-          { id: 1, usuario: 'Miguel', texto: 'Muy inspirador.' }
-        ]
-      },
-      {
-        id: 7,
-        nombre: 'Taller de Escritura Creativa',
-        horario: 'Martes y Jueves 16:00 - 18:00',
-        descripcion: 'Desarrolla tus habilidades de escritura con ejercicios creativos.',
-        diaInicio: '07/06/2025',
-        tallerista: 'Lucía Torres',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: []
-      },
-      {
-        id: 8,
-        nombre: 'Taller de Yoga',
-        horario: 'Sábados 08:00 - 09:30',
-        descripcion: 'Relájate y mejora tu flexibilidad con yoga.',
-        diaInicio: '08/06/2025',
-        tallerista: 'Claudia Vega',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: [
-          { id: 1, usuario: 'Elena', texto: 'Perfecto para empezar el día.' }
-        ]
-      },
-      {
-        id: 9,
-        nombre: 'Taller de Fotografía Avanzada',
-        horario: 'Viernes 11:00 - 13:00',
-        descripcion: 'Perfecciona tus habilidades fotográficas con técnicas avanzadas.',
-        diaInicio: '09/06/2025',
-        tallerista: 'Carlos Gómez',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: []
-      },
-      {
-        id: 10,
-        nombre: 'Taller de Programación Avanzada',
-        horario: 'Lunes y Miércoles 13:00 - 15:00',
-        descripcion: 'Lleva tus habilidades de programación al siguiente nivel.',
-        diaInicio: '10/06/2025',
-        tallerista: 'Juan Pérez',
-        imagen: 'https://via.placeholder.com/150',
-        comentarios: [
-          { id: 1, usuario: 'Diego', texto: 'Muy desafiante, pero aprendí mucho.' }
-        ]
-      }
-    ]);
 
+    const talleres = ref([]);
     const tallerSeleccionado = ref(null);
 
-    const mostrarTallerInfo = (taller) => {
-      if (taller && typeof taller === 'object') {
-        console.log('Taller seleccionado:', taller);
-        tallerSeleccionado.value = taller;
-      } else {
-        console.error('El taller seleccionado no es válido:', taller);
+    const cargarTalleres = async () => {
+      try{
+        const response = await axios.get('http://localhost:3002/taller/listaTalleres');
+        talleres.value = response.data;
+      }catch(error){
+        console.error('Error al cargar los talleres:', error);
+      }
+    }
+
+    onMounted(() => {
+      cargarTalleres();
+    });
+
+    const mostrarTallerInfo = async (taller) => {
+      try {
+        const response = await axios.post('http://localhost:3002/taller/vistaTaller', {
+          ID_Taller: taller.ID_Taller || taller.id
+        });
+        console.log("Datos recibidos del backend:", response.data);
+        tallerSeleccionado.value = response.data;
+      } catch (error) {
+        console.error('Error al obtener la información del taller:', error);
       }
     };
 
@@ -167,7 +74,7 @@ export default {
       cerrarTallerInfo
     };
   }
-}
+};
 </script>
 
 <style scoped>

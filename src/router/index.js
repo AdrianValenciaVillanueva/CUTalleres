@@ -9,6 +9,9 @@ const CrearTallerView = () => import('../views/CrearTallerView.vue')
 const GestionarTallerView = () => import('../views/GestionarTallerView.vue')
 const PerfilEstudianteView = () => import('../views/PerfilEstudianteView.vue')
 const SeleccionarTallerView = () => import('../views/SeleccionarTallerView.vue')
+const AdminHome = () => import('../views/Admin/AdminHome.vue')
+const EliminarTaller = () => import('../views/Admin/AdminTaller.vue')
+const CambiarRol = () => import('../views/Admin/AdminCambio.vue')
 
 const routes = [
   {
@@ -55,6 +58,21 @@ const routes = [
     name: 'selectTaller',
     component: SeleccionarTallerView,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/adminhome',
+    name: 'Administrador',
+    component: AdminHome
+  },
+  {
+    path:'/adminTaller',
+    name: 'EliminarTaller',
+    component: EliminarTaller
+  },
+  {
+    path: '/adminCambio',
+    name: 'CambiarRol',
+    component: CambiarRol
   }
 ]
 

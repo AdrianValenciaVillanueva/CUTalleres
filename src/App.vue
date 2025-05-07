@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view v-slot="{ Component }">
-      <transition name="slide" mode="out-in">
+      <transition name="slide" mode="default">
         <component :is="Component" />
       </transition>
     </router-view>

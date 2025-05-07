@@ -1,5 +1,6 @@
 <template>
-<HeaderComponent></HeaderComponent>
+  <HeaderComponent @toggle-menu="toggleMenu"></HeaderComponent>
+  <MenuDesplegable v-if="menuVisible" ref="menu" @rt-home="to-home"></MenuDesplegable>
     <div>
       <h1></h1>
       <PerfilEstudiante />

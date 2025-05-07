@@ -49,9 +49,12 @@ export default {
   name: 'LoginView',
   data() {
     return {
-      codigo_udg: '',
-      contrasena: '',
-      errorMessage: ''
+      email: '',
+      password: '',
+      staticUser:{
+        email:'usuario@example.com',
+        password:'123456'
+      }
     }
   },
   methods: {

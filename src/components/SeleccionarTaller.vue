@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import router from '@/router';
 import TallerCard from './TallerCard.vue';
 import TallerInfoCard from './TallerInfoCard.vue';
 import { ref, onMounted} from 'vue';

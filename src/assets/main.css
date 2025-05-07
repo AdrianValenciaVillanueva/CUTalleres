@@ -1,0 +1,10 @@
+.boldFont{
+    color: var(--font-color);
+    font-family: "Sofia Sans";
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+

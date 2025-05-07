@@ -56,7 +56,7 @@ export default {
       password: '',
       staticUser:{
         email:'usuario@example.com',
-        password:'123456'
+        password:'1234'
       }
     }
   },

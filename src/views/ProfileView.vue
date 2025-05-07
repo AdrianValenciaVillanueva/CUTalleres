@@ -1,5 +1,6 @@
 <template>
-  <HeaderComponent></HeaderComponent>
+  <HeaderComponent @toggle-menu="toggleMenu"></HeaderComponent>
+  <MenuDesplegable v-if="menuVisible" ref="menu" @rt-home="to-home"></MenuDesplegable>
   <div class="profile-container">
     
     <div class="profile-content">
@@ -113,7 +114,7 @@ export default {
 <style scoped>
 .profile-container {
   max-width: 1000px;
-  margin: 0 auto;
+  margin:  1rem auto;
   padding: 1.5rem;
   background-color: #f5f5f5;
   border-radius: 10px;

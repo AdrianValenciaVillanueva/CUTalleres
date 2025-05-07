@@ -5,11 +5,7 @@
   left: 0;
   width: 12rem;
   height: 40vh;
-  background: linear-gradient(
-    180deg,
-    var(--primary-color) 70%,
-    rgba(37, 37, 37, 0.7) 100%
-  );
+  background-color: var(--primary-color);
   border-radius: 0rem 0rem 8rem 0rem;
   z-index: 1000;
   display: flex;

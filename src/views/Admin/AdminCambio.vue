@@ -1,19 +1,23 @@
 <template>
-  <div id="app">
-    <router-view v-slot="{ Component }">
-      <transition name="slide" mode="default">
-        <component :is="Component" />
-      </transition>
-    </router-view>
-  </div>
+    <CambiarRol />
 </template>
+
+<script>
+// Importar el componente correctamente
+import CambiarRol from '../../components/CambiarRol.vue';
+
+export default {
+  name: 'Admin',
+  components: {
+    CambiarRol
+  }
+};
+</script>
 
 <style>
 #app {
   font-family: Arial, sans-serif;
-  padding: 0;
-  margin: 0;
-  background-color: var(--background-color);
+  padding: 20px;
 }
 
 /* Animación de desvanecimiento */

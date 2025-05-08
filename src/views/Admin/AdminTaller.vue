@@ -1,19 +1,23 @@
 <template>
-  <div id="app">
-    <router-view v-slot="{ Component }">
-      <transition name="slide" mode="default">
-        <component :is="Component" />
-      </transition>
-    </router-view>
-  </div>
+    <EliminarTaller />
 </template>
+
+<script>
+// Importar el componente correctamente
+import EliminarTaller from '../../components/EliminarTaller.vue'
+
+export default {
+  name: 'Admin',
+  components: {
+    EliminarTaller
+  }
+};
+</script>
 
 <style>
 #app {
   font-family: Arial, sans-serif;
-  padding: 0;
-  margin: 0;
-  background-color: var(--background-color);
+  padding: 20px;
 }
 
 /* Animación de desvanecimiento */

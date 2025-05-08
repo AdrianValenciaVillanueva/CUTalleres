@@ -95,11 +95,11 @@
   animation: arrive 2s ease-in-out;
 }
 .logo.light {
-  background-image: url('/src/assets/CutalleresLogoAlt.svg');
+  background-image: url('/src/assets/CutalleresLogoAlt.png');
 }
 
 .logo.dark {
-  background-image: url('/src/assets/CutalleresLogoDark.svg');
+  background-image: url('/src/assets/CutalleresLogoDark.png');
 }
 
 [data-theme="light"] .logo.light {

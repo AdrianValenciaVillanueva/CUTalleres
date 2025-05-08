@@ -3,35 +3,20 @@
     <unlog-header></unlog-header>
     <div class="register-container"> 
       <h2 class="register-title">Registro de Usuario</h2>
-      
       <div class="register-content">
         <div class="register-form">
           <form @submit.prevent="submitRegister">
             <div class="form-row">
               <div class="form-group">
-                <label for="name">Nombre:</label>
+                <label for="codigo_udg">Código UDG:</label>
                 <input
-                  type="text"
-                  id="name"
-                  v-model="name"
-                  placeholder="Ingrese su nombre"
+                  type="number"
+                  id="codigo_udg"
+                  v-model="codigo_udg"
+                  placeholder="Ingrese su código UDG"
                   required
                 />
               </div>
-      
-              <div class="form-group">
-                <label for="lastName">Apellidos:</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  v-model="lastName"
-                  placeholder="Ingrese sus apellidos"
-                  required
-                />
-              </div>
-            </div>
-      
-            <div class="form-row">
               <div class="form-group">
                 <label for="email">Correo electrónico:</label>
                 <input
@@ -42,19 +27,7 @@
                   required
                 />
               </div>
-      
-              <div class="form-group">
-                <label for="phone">Teléfono:</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  v-model="phone"
-                  placeholder="Ingrese su teléfono"
-                  required
-                />
-              </div>
             </div>
-      
             <div class="form-row">
               <div class="form-group">
                 <label for="password">Contraseña:</label>
@@ -66,7 +39,6 @@
                   required
                 />
               </div>
-      
               <div class="form-group">
                 <label for="confirmPassword">Confirmar contraseña:</label>
                 <input
@@ -78,17 +50,15 @@
                 />
               </div>
             </div>
-      
+            <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
             <div class="form-actions">
               <button type="submit" class="btn-register">Registrarse</button>
             </div>
-      
             <div class="form-links">
               <router-link to="/login">¿Ya tienes cuenta? Inicia sesión</router-link>
             </div>
           </form>
         </div>
-      
         <div class="register-image">
           <img src="../assets/RegisterIMG.png" alt="Icono educativo" />
         </div>
@@ -103,32 +73,41 @@ export default {
   name: 'RegisterView',
   data() {
     return {
-      name: '',
-      lastName: '',
+      codigo_udg: '',
       email: '',
-      phone: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      errorMessage: ''
     }
   },
   methods: {
-    submitRegister() {
-      // Validar que las contraseñas coincidan
+    async submitRegister() {
+      this.errorMessage = '';
       if (this.password !== this.confirmPassword) {
-        alert('Las contraseñas no coinciden')
-        return
+        this.errorMessage = 'Las contraseñas no coinciden';
+        return;
       }
-      
-      // Aquí iría la lógica para el registro
-      console.log('Registrando usuario:', {
-        name: this.name,
-        lastName: this.lastName,
-        email: this.email,
-        phone: this.phone
-      })
-      
-      // Después del registro exitoso, redirigir al inicio de sesión
-      this.$router.push('/login')
+      try {
+        const response = await fetch('http://localhost:3001/users/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            codigo_udg: Number(this.codigo_udg),
+            correo: this.email,
+            contrasena: this.password
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Error al registrar usuario');
+        }
+        // const data = await response.json(); // Puedes usarlo si necesitas los datos de respuesta
+        this.$router.push('/login');
+      } catch (error) {
+        this.errorMessage = 'No se pudo registrar el usuario';
+        console.error(error);
+      }
     }
   }
 }
@@ -248,6 +227,12 @@ input {
 
 .form-links a:hover {
   text-decoration: underline;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 @media (max-width: 768px) {

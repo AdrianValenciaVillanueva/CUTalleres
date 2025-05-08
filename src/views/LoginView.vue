@@ -3,45 +3,42 @@
     <unlog-header></unlog-header>
     <div class="login-container">
       <h2 class="login-title">Inicio de Sesión</h2>  
-    <div class="login-content">
-      <div class="login-image">
-        <img src="../assets/LoginIMG.png" alt="Máscaras de teatro" />
+      <div class="login-content">
+        <div class="login-image">
+          <img src="../assets/LoginIMG.png" alt="Máscaras de teatro" />
+        </div>
+        <div class="login-form">
+          <form @submit.prevent="submitLogin">
+            <div class="form-group">
+              <label for="codigo_udg">Código UDG:</label>
+              <input 
+                type="number" 
+                id="codigo_udg" 
+                v-model="codigo_udg" 
+                placeholder="Ingrese su código UDG" 
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="contrasena">Contraseña:</label>
+              <input 
+                type="password" 
+                id="contrasena" 
+                v-model="contrasena" 
+                placeholder="Ingrese su contraseña" 
+                required
+              />
+            </div>
+            <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+            <div class="form-actions">
+              <button type="submit" class="btn-login">Iniciar Sesión</button>
+            </div>
+            <div class="form-links">
+              <router-link to="/register">¿No tienes cuenta? Regístrate</router-link>
+            </div>
+          </form>
+        </div>
       </div>
-      
-      <div class="login-form">
-        <form @submit.prevent="submitLogin">
-          <div class="form-group">
-            <label for="email">Correo electrónico:</label>
-            <input 
-              type="email" 
-              id="email" 
-              v-model="email" 
-              placeholder="Ingrese su correo" 
-              required
-            />
-          </div>
-          
-          <div class="form-group">
-            <label for="password">Contraseña:</label>
-            <input 
-              type="password" 
-              id="password" 
-              v-model="password" 
-              placeholder="Ingrese su contraseña" 
-              required
-            />
-          </div>
-          
-          <div class="form-actions">
-            <button type="submit" class="btn-login">Iniciar Sesión</button>
-          </div>
-          
-          <div class="form-links">
-            <router-link to="/register">¿No tienes cuenta? Regístrate</router-link>
-          </div>
-        </form>
-      </div>
-    </div>
     </div>
     <footer-component></footer-component>
   </div>
@@ -53,15 +50,44 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      staticUser:{
+        email:'usuario@example.com',
+        password:'123456'
+      }
     }
   },
   methods: {
-    submitLogin() {
-      // Aquí iría la lógica para el inicio de sesión
-      console.log('Iniciando sesión con:', this.email, this.password)
-      // Después de la validación exitosa, redirigir al perfil
-      this.$router.push('/profile')
+    async submitLogin() {
+      this.errorMessage = '';
+      try {
+        const response = await fetch('http://localhost:3001/users/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            codigo_udg: Number(this.codigo_udg),
+            contrasena: this.contrasena
+          })
+        });
+        if (!response.ok) {
+          throw new Error('Credenciales incorrectas');
+        }
+        const data = await response.json();
+        // Guardar token y usuario si es necesario
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        // Redirigir según el rol
+        if (data.user.rol === 'admin') {
+          this.$router.push('/adminhome');
+        } else {
+          this.$router.push('/profile');
+        }
+      } catch (error) {
+        this.errorMessage = 'Código o contraseña incorrectos';
+        console.error('Error de inicio de sesión', error);
+      }
     }
   }
 }
@@ -165,5 +191,11 @@ input {
 
 .form-links a:hover {
   text-decoration: underline;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 </style>

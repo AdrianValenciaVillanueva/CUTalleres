@@ -1,17 +1,5 @@
 <template>
   <div class="crear-taller-container">
-    <header class="header">
-      <div class="logo">
-        <img src="@/assets/Cutalleres logo prototipo naranja-azul sin fondo 1.png" alt="CTalleres Logo" />
-      </div>
-      <div class="nav-links">
-        <a href="#" class="nav-link">Lista de talleres</a>
-        <div class="divider"></div>
-        <a href="#" class="nav-link">Mis talleres <span class="dropdown-arrow">▾</span></a>
-        <div class="divider"></div>
-        <a href="#" class="nav-link">Perfil <span class="dropdown-arrow">▾</span></a>
-      </div>
-    </header>
 
     <main class="content">
       <h1 class="section-title">CREAR TALLER</h1>
@@ -28,33 +16,34 @@
             <label for="descripcionTaller" class="form-label">Descripción del taller:</label>
             <textarea id="descripcionTaller" class="form-textarea" placeholder="Describe el tema del taller y sus enfoques" v-model="form.descripcion"></textarea>
           </div>
-
-          <div class="form-group">
-            <label for="diaInicio" class="form-label">Día de inicio:</label>
-            <input type="text" id="diaInicio" class="form-input" placeholder="Día de la primera clase del taller" v-model="form.diaInicio" />
-          </div>
-
-          <div class="form-group">
-            <label for="horario" class="form-label">Horario:</label>
-            <input type="text" id="horario" class="form-input" placeholder="Horario del taller" v-model="form.horario" />
-          </div>
         </div>
 
-        <!-- Columna derecha -->
-        <div class="form-right-column">
-          <div class="form-group">
-            <label class="form-label">Imagen del taller</label>
-            <div class="image-upload-area" @click="triggerFileInput">
-              <div v-if="!imagenSrc" class="upload-placeholder">
-                <div class="upload-icon">+</div>
-                <p class="upload-text">Agregar una imagen a la página del taller</p>
+        <!-- Columna derecha con imagen y campos de fecha y horario -->
+          <div class="form-right-column">
+            <div class="form-group">
+              <label class="form-label">Imagen del taller</label>
+              <div class="image-upload-area" @click="triggerFileInput">
+                <div v-if="!imagenSrc" class="upload-placeholder">
+                  <div class="upload-icon">+</div>
+                  <p class="upload-text">Agregar una imagen a la página del taller</p>
+                </div>
+                <img v-else :src="imagenSrc" alt="Imagen del taller" style="max-width: 100%; border-radius: 8px;" />
+                <input type="file" ref="imageInput" accept="image/*" style="display: none;" @change="previewImage">
               </div>
-              <img v-else :src="imagenSrc" alt="Imagen del taller" style="max-width: 100%; border-radius: 8px;" />
-              <input type="file" ref="imageInput" accept="image/*" style="display: none;" @change="previewImage">
+            </div>
+
+            <!-- Agregamos aquí los campos de fecha y horario -->
+            <div class="form-group">
+              <label for="diaInicio" class="form-label">Día de inicio:</label>
+              <input type="date" id="diaInicio" class="form-input" v-model="form.diaInicio" />
+            </div>
+
+            <div class="form-group">
+              <label for="horario" class="form-label">Horario:</label>
+              <input type="time" id="horario" class="form-input" v-model="form.horario" />
             </div>
           </div>
-        </div>
-      </div>
+          </div>
 
       <div class="button-container">
         <button class="crear-button" @click="guardarTaller">CREAR</button>
@@ -98,11 +87,12 @@ export default {
       const datosTaller = {
         nombre: this.form.nombre,
         descripcion: this.form.descripcion,
-        diaInicio: this.form.diaInicio,
-        horario: this.form.horario,
+        diaInicio: new Date(this.form.diaInicio).toISOString().split('T')[0],  // Formato YYYY-MM-DD
+        horario: this.form.horario, // Formato HH:MM
         imagenBase64: this.imagenSrc,
         imagenArchivo: this.form.imagen
       };
+
 
       console.log("Datos del taller:", datosTaller);
       alert("Taller guardado (revisar consola para ver los datos).");
@@ -204,7 +194,7 @@ export default {
 }
 
 .form-textarea {
-  height: 180px;
+  height: 222px;
   resize: none;
 }
 

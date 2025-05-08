@@ -41,7 +41,7 @@ export default {
     const cargarTalleres = async () => {
       try{
         const response = await axios.get('http://localhost:3002/taller/listaTalleres');
-        talleres.value = response.data;
+        talleres.value = response.data.filter(taller => taller.estado === true); //Solo se mostraran los talleres que no esten dados de baja gracias al atributo estado
       }catch(error){
         console.error('Error al cargar los talleres:', error);
       }
@@ -54,7 +54,7 @@ export default {
     const mostrarTallerInfo = async (taller) => {
       try {
         const response = await axios.post('http://localhost:3002/taller/vistaTaller', {
-          ID_Taller: taller.ID_Taller || taller.id
+          ID_Taller: taller.ID_Taller // || taller.id (Al final no se ocupo)
         });
         console.log("Datos recibidos del backend:", response.data);
         tallerSeleccionado.value = response.data;

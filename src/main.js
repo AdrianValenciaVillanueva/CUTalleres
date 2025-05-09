@@ -1,4 +1,6 @@
 import { createApp } from 'vue'
+import { forEach } from 'lodash';
+import axios from 'axios';
 import App from './App.vue'
 import router from './router'
 import HeaderComponent from './components/HeaderComponent.vue';
@@ -20,3 +22,4 @@ app.component('unlog-header', UnLogHeader);
 app.component('menu-desplegable', MenuDesplegable);
 
 app.use(router).mount('#app');
+

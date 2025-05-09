@@ -1,6 +1,6 @@
 <template>
   <HeaderComponent @toggle-menu="toggleMenu"></HeaderComponent>
-  <MenuDesplegable v-if="menuVisible" ref="menu" @rt-home="to-home"></MenuDesplegable>
+  <MenuDesplegable v-if="menuVisible" ref="menu" :privilegios="setPrivilegios()"></MenuDesplegable>
   <div>
     <h1></h1>
     <SeleccionarTaller />
@@ -13,6 +13,7 @@ import HeaderComponent from '../components/HeaderComponent.vue'
 import MenuDesplegable from '@/components/MenuDesplegable/MenuDesplegable.vue';
 import { ref, onMounted, onUnmounted, provide } from 'vue';
 import router from '@/router';
+import { setPrivilegios } from '@/services/db-data.js'; // Asegúrate de que la ruta sea correcta
 
 export default {
   components: { 
@@ -23,6 +24,18 @@ export default {
   setup() {
     const menuVisible = ref(false);
     const menu = ref(null);
+
+    // const setPrivilegios = () => {
+    //   const userData = JSON.parse(localStorage.getItem('user'));
+    //   const rol = userData.rol;
+    //   if(rol ==='tallerista'){
+    //     return true;
+    //   }
+    //   else{
+    //     return false;
+    //   }
+    //   return false;
+    // };
 
     const toHome = () => {
       router.push({ name: 'home' });
@@ -63,6 +76,7 @@ export default {
       toggleMenu,
       menu,
       toHome,
+      setPrivilegios,
     };
   }
 }

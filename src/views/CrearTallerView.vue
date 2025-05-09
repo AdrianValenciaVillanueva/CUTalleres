@@ -1,7 +1,7 @@
 <!-- src/views/CrearTallerView.vue -->
 <template>
   <HeaderComponent @toggle-menu="toggleMenu"></HeaderComponent>
-  <MenuDesplegable v-if="menuVisible" ref="menu" ></MenuDesplegable>
+  <MenuDesplegable v-if="menuVisible" ref="menu" :privilegios="setPrivilegios()" ></MenuDesplegable>
   <div>
     <h1></h1>
     <CrearTaller />
@@ -9,6 +9,7 @@
 </template>
 
 <script>
+import { setPrivilegios } from '@/services/db-data';
 import CrearTaller from '../components/CrearTaller.vue'
 import HeaderComponent from '../components/HeaderComponent.vue'
 import MenuDesplegable from '@/components/MenuDesplegable/MenuDesplegable.vue';
@@ -58,6 +59,7 @@ export default {
       menuVisible,
       toggleMenu,
       menu,
+      setPrivilegios
     };
   }
 }

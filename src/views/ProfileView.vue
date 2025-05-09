@@ -1,12 +1,12 @@
 <template>
   <HeaderComponent @toggle-menu="toggleMenu"></HeaderComponent>
-  <MenuDesplegable v-if="menuVisible" ref="menu" @rt-home="to-home"></MenuDesplegable>
+  <MenuDesplegable v-if="menuVisible" ref="menu" :privilegios="setPrivilegios()"></MenuDesplegable>
   <div class="profile-container">
     
     <div class="profile-content">
       <div class="profile-info">
         <div class="info-section">
-          <h3>Datos Personaless</h3>
+          <h3>Datos Personales</h3>
           <div class="info-row">
             <div class="info-label">Nombre:</div>
             <div class="info-value">{{ user?.info?.nombre || 'No disponible' }}</div>
@@ -45,7 +45,6 @@
               <tr v-for="(workshop, index) in workshops" :key="index">
                 <td>
                   <div class="workshop-info">
-                    <img :src="workshop.icon" :alt="workshop.name" class="workshop-icon" />
                     <span>{{ workshop.name }}</span>
                   </div>
                 </td>
@@ -70,39 +69,88 @@
 
 <script>
 import HeaderComponent from '@/components/HeaderComponent.vue'
+import axios from 'axios'
+import MenuDesplegable from '@/components/MenuDesplegable/MenuDesplegable.vue';
+import { ref, onMounted, onUnmounted, provide } from 'vue';
+import router from '@/router';
+import { forEach } from 'lodash';
+import { get } from 'lodash';
+import { getLoggedUser, setPrivilegios } from '@/services/db-data.js'; // Asegúrate de que la ruta sea correcta
 export default {
-  components: { HeaderComponent },
+  components: { HeaderComponent, MenuDesplegable },
+  setup() {
+    const menuVisible = ref(false);
+    const menu = ref(null);
+
+    const handleClickOutside = (event) => {
+      // Verifica si el menú está visible y si el clic no fue dentro del menú ni en el botón de toggle
+      if (menuVisible.value && menu.value && 
+          !event.target.closest('.menu-desplegable') && 
+          !event.target.closest('#menuBt')) {
+        menuVisible.value = false;
+      }
+    };
+
+    const toggleMenu = () => {
+      menuVisible.value = !menuVisible.value;
+    };
+
+    const closeMenu = () => {
+      menuVisible.value = false;
+    };
+
+    // Provee la función para cerrar el menú
+    provide('closeMenu', closeMenu);
+
+    // Agregar el event listener cuando el componente se monta
+    onMounted(() => {
+      document.addEventListener('click', handleClickOutside);
+    });
+
+    // Remover el event listener cuando el componente se desmonta
+    onUnmounted(() => {
+      document.removeEventListener('click', handleClickOutside);
+    });
+
+    return { 
+      menuVisible, 
+      toggleMenu,
+      setPrivilegios 
+    }
+   },
   name: 'ProfileView',
   data() {
     return {
       user: null,
-      workshops: [
+      workshops: 
         {
-          name: 'Taller de Teatro',
+          name: '',
           //icon: require('../assets/theater-icon.png'), // Asegúrate de tener esta imagen
-          date: '10/03/2023',
-          inscriptionType: 'Presencial',
-          status: 'Activo',
+          date: '',
+          inscriptionType: '',
+          status: '',
           certificateAvailable: false
-        },
-        {
-          name: 'Curso de Oratoria',
-          //icon: require('../assets/speech-icon.png'), // Asegúrate de tener esta imagen
-          date: '20/02/2023',
-          inscriptionType: 'Virtual',
-          status: 'Finalizado',
-          certificateAvailable: true
         }
-      ]
     }
   },
-  mounted() {
-    const userData = localStorage.getItem('user');
-    if (userData) {
-      this.user = JSON.parse(userData);
-    }
+  async mounted() {
+      try {
+    const userJson = await getLoggedUser(); // Obtén el string JSON
+    this.user = JSON.parse(userJson); // Convierte el string JSON a un objeto
+    console.log('User loaded:', this.user); // Log del usuario como objeto
+  } catch (error) {
+    console.error('Error loading user:', error);
+  }
   },
   methods: {
+    // async fetchWorkshops() {
+    //   try {
+    //     const response = await axios.get('http://localhost:3002/user/workshops')
+    //     this.workshops = response.data
+    //   } catch (error) {
+    //     console.error('Error fetching workshops:', error)
+    //   }
+    // },
     logout() {
       // Lógica para cerrar sesión
       this.$router.push('/')
@@ -114,7 +162,7 @@ export default {
 <style scoped>
 .profile-container {
   max-width: 1000px;
-  margin: 0 auto;
+  margin: 1rem auto 0 ;
   padding: 1.5rem;
   background-color: #f5f5f5;
   border-radius: 10px;
@@ -164,6 +212,10 @@ export default {
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.profile-info {
+  overflow: scroll;
 }
 
 .info-section {

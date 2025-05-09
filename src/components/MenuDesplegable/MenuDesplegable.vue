@@ -34,5 +34,11 @@ import { RouterLink } from 'vue-router';
 import './style.css';
 export default {
   name: 'MenuDesplegable',
+  props: {
+    privilegios: {
+      type: Boolean,
+      default: false,
+    },
+  },
 };
 </script>

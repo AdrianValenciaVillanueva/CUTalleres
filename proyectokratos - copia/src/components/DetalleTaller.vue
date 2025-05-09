@@ -28,7 +28,13 @@
       </section>
 
       <div class="boton-inscribirse">
-        <button class="inscribirse-btn">INSCRIBIRME ➜</button>
+        <button 
+          class="inscribirse-btn" 
+          @click="inscribirse"
+          :disabled="cargando"
+        >
+          {{ cargando ? 'PROCESANDO...' : 'INSCRIBIRME ➜' }}
+        </button>
       </div>
     </main>
 
@@ -40,10 +46,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'DetalleTaller',
   data() {
     return {
+      cargando: false,
       taller: {
         nombre: "Taller de Programación",
         impartidor: "Juan Pérez",
@@ -54,6 +63,42 @@ export default {
         imagenCargada: false
       }
     };
+  },
+  methods: {
+    async inscribirse() {
+      // Obtener ID del taller (asumiento que está en la URL como /talleres/:id)
+      const tallerId = this.$route?.params?.id || 1; // Si no hay ruta, usa 1 como ejemplo
+      
+      // Obtener código del alumno desde localStorage (debe guardarse al hacer login)
+      const codigoAlumno = localStorage.getItem('codigoAlumno');
+      
+      if (!codigoAlumno) {
+        alert('Debes iniciar sesión para inscribirte');
+        return this.$router.push('/login'); // Redirige al login si no está autenticado
+      }
+
+      this.cargando = true;
+      try {
+        const response = await axios.post(
+          'http://localhost:3004/api/inscripciones',
+          {
+            Codigo_alumno: codigoAlumno,
+            ID_taller: tallerId
+          }
+        );
+        
+        alert('¡Inscripción exitosa!');
+        console.log('Respuesta del servidor:', response.data);
+        
+      } catch (error) {
+        const mensajeError = error.response?.data?.message || 
+                            'Error al inscribirse. Por favor, intenta más tarde.';
+        alert(mensajeError);
+        console.error('Error en la inscripción:', error);
+      } finally {
+        this.cargando = false;
+      }
+    }
   }
 };
 </script>

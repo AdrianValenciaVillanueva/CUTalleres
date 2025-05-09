@@ -24,9 +24,11 @@ const routes = [
     component: PerfilEstudianteView
   },
   {
-    path: '/detalle-taller',
     
-    component: DetalleTallerView
+      path: '/detalle-taller/:id',  // Ahora acepta un ID dinámico
+      component: DetalleTallerView,
+      props: true  // Pasa el parámetro como prop al componente
+    
   },
   
   {

@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'TalleresApp',
   data() {
@@ -72,21 +74,38 @@ export default {
     };
   },
   methods: {
-    async handleFileUpload(event, alumnoId) {
-      const file = event.target.files[0];
-      if (!file) return;
+    async handleFileUpload(event, idInscripcion) {
+      const file = event.target.files[0]; // Obtener el archivo seleccionado
+
+      if (!file) {
+        alert('Por favor selecciona un archivo.');
+        return;
+      }
+
+      if (file.type !== 'application/pdf') {
+        alert('Solo se permiten archivos PDF.');
+        return;
+      }
 
       const formData = new FormData();
-      formData.append("certificado", file);
-      formData.append("alumnoId", alumnoId);
+      formData.append('pdf', file); // Coincidir con el nombre esperado por multer
 
       try {
-        // Simulando la conexión con el backend
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        this.alumnos.find(alumno => alumno.id === alumnoId).certificado = true;
-        console.log(`Certificado subido para alumno ID ${alumnoId}:`, file.name);
+        // Realizar la solicitud POST al backend
+        const response = await axios.post(`http://localhost:3004/api/certificaciones/subir/${idInscripcion}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        alert('Certificado subido exitosamente.');
+        console.log(response.data); // Opcional: manejar la respuesta del backend
+
+        // Actualizar el estado del alumno
+        this.alumnos.find(alumno => alumno.id === idInscripcion).certificado = true;
       } catch (error) {
-        console.error("Error al subir el certificado:", error);
+        console.error('Error al subir el certificado:', error);
+        alert('Hubo un error al subir el certificado.');
       }
     },
     finalizarTaller() {

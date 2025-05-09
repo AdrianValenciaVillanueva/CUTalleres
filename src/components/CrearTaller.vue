@@ -1,49 +1,44 @@
 <template>
   <div class="crear-taller-container">
-
     <main class="content">
       <h1 class="section-title">CREAR TALLER</h1>
-
       <div class="form-container">
-        <!-- Columna izquierda -->
+
         <div class="form-left-column">
           <div class="form-group">
             <label for="nombreTaller" class="form-label">Nombre del Taller:</label>
             <input type="text" id="nombreTaller" class="form-input" placeholder="Ingresa el nombre del Taller" v-model="form.nombre" />
           </div>
-
           <div class="form-group">
             <label for="descripcionTaller" class="form-label">Descripción del taller:</label>
             <textarea id="descripcionTaller" class="form-textarea" placeholder="Describe el tema del taller y sus enfoques" v-model="form.descripcion"></textarea>
           </div>
         </div>
 
-        <!-- Columna derecha con imagen y campos de fecha y horario -->
-          <div class="form-right-column">
-            <div class="form-group">
-              <label class="form-label">Imagen del taller</label>
-              <div class="image-upload-area" @click="triggerFileInput">
-                <div v-if="!imagenSrc" class="upload-placeholder">
-                  <div class="upload-icon">+</div>
-                  <p class="upload-text">Agregar una imagen a la página del taller</p>
-                </div>
-                <img v-else :src="imagenSrc" alt="Imagen del taller" style="max-width: 100%; border-radius: 8px;" />
-                <input type="file" ref="imageInput" accept="image/*" style="display: none;" @change="previewImage">
+        <div class="form-right-column">
+          <div class="form-group">
+            <label class="form-label">Imagen del taller</label>
+            <div class="image-upload-area" @click="triggerFileInput">
+              <div v-if="!imagenSrc" class="upload-placeholder">
+                <div class="upload-icon">+</div>
+                <p class="upload-text">Agregar una imagen a la página del taller</p>
               </div>
-            </div>
-
-            <!-- Agregamos aquí los campos de fecha y horario -->
-            <div class="form-group">
-              <label for="diaInicio" class="form-label">Día de inicio:</label>
-              <input type="date" id="diaInicio" class="form-input" v-model="form.diaInicio" />
-            </div>
-
-            <div class="form-group">
-              <label for="horario" class="form-label">Horario:</label>
-              <input type="time" id="horario" class="form-input" v-model="form.horario" />
+              <img v-else :src="imagenSrc" alt="Imagen del taller" style="max-width: 100%; border-radius: 8px;" />
+              <input type="file" ref="imageInput" accept="image/*" style="display: none;" @change="previewImage">
             </div>
           </div>
+
+          <div class="form-group">
+            <label for="diaInicio" class="form-label">Día de inicio:</label>
+            <input type="date" id="diaInicio" class="form-input" v-model="form.diaInicio" />
           </div>
+
+          <div class="form-group">
+            <label for="horario" class="form-label">Horario:</label>
+            <input type="time" id="horario" class="form-input" v-model="form.horario" />
+          </div>
+        </div>
+      </div>
 
       <div class="button-container">
         <button class="crear-button" @click="guardarTaller">CREAR</button>
@@ -53,6 +48,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Swal from 'sweetalert2';  
+
 export default {
   name: 'CrearTaller',
   data() {
@@ -77,30 +75,54 @@ export default {
 
       this.form.imagen = file;
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.imagenSrc = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      //Crear un objeto URL para la imagen (mejor rendimiento que FileReader)
+      this.imagenSrc = URL.createObjectURL(file);
     },
-    guardarTaller() {
-      const datosTaller = {
-        nombre: this.form.nombre,
-        descripcion: this.form.descripcion,
-        diaInicio: new Date(this.form.diaInicio).toISOString().split('T')[0],  // Formato YYYY-MM-DD
-        horario: this.form.horario, // Formato HH:MM
-        imagenBase64: this.imagenSrc,
-        imagenArchivo: this.form.imagen
-      };
+    async guardarTaller() {
+      //Verifica si algún campo está vacío
+      if (!this.form.nombre || !this.form.descripcion || !this.form.diaInicio || !this.form.horario || !this.form.imagen) {
+        //Muestra un mensaje de alerta si algún campo está vacío
+        Swal.fire({
+          icon: 'error',
+          title: 'Faltan datos',
+          text: 'Por favor, completa todos los campos antes de crear el taller.',
+        });
+        return;
+      }
 
+      try {
+        //Construcción de FormData para enviar el archivo
+        const formData = new FormData();
+        formData.append('nombre_taller', this.form.nombre);
+        formData.append('descripcion', this.form.descripcion);
+        formData.append('fecha', this.form.diaInicio);
+        formData.append('horario', this.form.horario);
+        formData.append('imagen', this.form.imagen); //Aquí se envía la imagen
 
-      console.log("Datos del taller:", datosTaller);
-      alert("Taller guardado (revisar consola para ver los datos).");
+        const response = await axios.post('http://localhost:3002/taller/crearTaller', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
 
-      // Aquí podrías hacer un envío real, por ejemplo usando FormData si vas a una API
+        Swal.fire({
+          icon: 'success',
+          title: 'Taller creado correctamente',
+          text: 'El taller se ha creado exitosamente.',
+        });
+        console.log('Respuesta del servidor:', response.data);
+
+      } catch (error) {
+        console.error('Error al crear el taller:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Hubo un error',
+          text: 'Hubo un error al crear el taller.',
+        });
+      }
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -207,6 +229,13 @@ export default {
   align-items: center;
   margin-bottom: 15px;
   cursor: pointer;
+}
+
+.image-upload-area img {
+  max-width: 100%;
+  max-height: 130px; /* Ajusta el alto para que no tape el formulario */
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .upload-placeholder {

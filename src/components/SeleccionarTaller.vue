@@ -124,7 +124,6 @@ export default {
   min-height: 100vh;
 }
 
-
 .header {
   background-color: #e6e6e6;
   display: flex;
@@ -174,17 +173,15 @@ export default {
   text-transform: uppercase;
 }
 
-
+/* Ajustes al contenedor para centrar las tarjetas */
 .taller-cards-container {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: flex-start;
+  justify-content: center; /* Ahora está centrado */
   padding: 0 20px;
   max-height: 70vh;
-  /* Limitar la altura máxima del contenedor */
   overflow-y: auto;
-  /* Habilitar el scroll vertical si el contenido excede la altura */
   scrollbar-width: thin;
 }
 </style>

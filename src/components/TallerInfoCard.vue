@@ -7,8 +7,8 @@
         <div class="taller-descripcion">
             <p><strong>Descripción: </strong> {{ taller.descripcion }}</p>
             <p><strong>Horario: </strong> {{ taller.horario }}</p>
-            <p><strong>Día de inicio: </strong> {{ taller.diaInicio }}</p>
-            <p><strong>Tallerista: </strong>{{ taller.tallerista }}</p>
+            <p><strong>Día de inicio: </strong> {{ taller.fecha }}</p>
+            <p><strong>Tallerista: </strong>{{ taller.admin_ID }}</p>
         </div>
         <button class="btn-inscribirse" @click="inscribirse">Inscribirse</button>
         <h2>COMENTARIOS SOBRE EL TALLER</h2>

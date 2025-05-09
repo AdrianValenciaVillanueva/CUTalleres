@@ -8,7 +8,7 @@
               <p>Imagen de fondo</p>
             </div>
             <div class="taller-action">
- <button class="gestionar-button" @click="$emit('seleccionarTaller', taller)">Gestionar</button>
+ <button class="gestionar-button" @click="$emit('seleccionarTaller', taller)">Ver mas</button>
             </div>
           </div>
 </template>

@@ -44,6 +44,12 @@
         <button class="crear-button" @click="guardarTaller">CREAR</button>
       </div>
     </main>
+
+    <footer class="footer">
+      <p>© CUTalleres</p>
+      <p>Universidad de Guadalajara</p>
+      <p>Centro Universitario de Tonalá</p>
+    </footer>
   </div>
 </template>
 
@@ -75,13 +81,13 @@ export default {
 
       this.form.imagen = file;
 
-      //Crear un objeto URL para la imagen (mejor rendimiento que FileReader)
+      // Crear un objeto URL para la imagen (mejor rendimiento que FileReader)
       this.imagenSrc = URL.createObjectURL(file);
     },
     async guardarTaller() {
-      //Verifica si algún campo está vacío
+      // Verifica si algún campo está vacío
       if (!this.form.nombre || !this.form.descripcion || !this.form.diaInicio || !this.form.horario || !this.form.imagen) {
-        //Muestra un mensaje de alerta si algún campo está vacío
+        // Muestra un mensaje de alerta si algún campo está vacío
         Swal.fire({
           icon: 'error',
           title: 'Faltan datos',
@@ -91,13 +97,13 @@ export default {
       }
 
       try {
-        //Construcción de FormData para enviar el archivo
+        // Construcción de FormData para enviar el archivo
         const formData = new FormData();
         formData.append('nombre_taller', this.form.nombre);
         formData.append('descripcion', this.form.descripcion);
         formData.append('fecha', this.form.diaInicio);
         formData.append('horario', this.form.horario);
-        formData.append('imagen', this.form.imagen); //Aquí se envía la imagen
+        formData.append('imagen', this.form.imagen); // Aquí se envía la imagen
 
         const response = await axios.post('http://localhost:3002/taller/crearTaller', formData, {
           headers: {
@@ -110,7 +116,18 @@ export default {
           title: 'Taller creado correctamente',
           text: 'El taller se ha creado exitosamente.',
         });
+        
         console.log('Respuesta del servidor:', response.data);
+
+        this.form = {
+          nombre: '',
+          descripcion: '',
+          diaInicio: '',
+          horario: '',
+          imagen: null
+        };
+        this.imagenSrc = null;
+        this.$refs.imageInput.value = null;
 
       } catch (error) {
         console.error('Error al crear el taller:', error);
@@ -124,6 +141,7 @@ export default {
   }
 };
 </script>
+
 
 <style scoped>
 .crear-taller-container {
@@ -180,7 +198,8 @@ export default {
 
 .section-title {
   text-align: center;
-  font-size: 24px;
+  color: #2e7d32;
+  font-size: 30px;
   font-weight: bold;
   margin: 30px 0;
   text-transform: uppercase;
@@ -223,7 +242,7 @@ export default {
 .image-upload-area {
   width: 100%;
   height: 130px;
-  background-color: #e6e6e6;
+  background-color: #d7ffd9;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -260,16 +279,29 @@ export default {
   margin-top: 20px;
 }
 
+.crear-button:hover {
+  background-color: #1b5e20;
+}
+
 .crear-button {
-  background-color: #7cfc00;
-  color: black;
-  border: none;
-  padding: 10px 50px;
-  font-size: 16px;
+  background-color: #2e7d32;
+  color: white;
+  font-size: 18px;
+  padding: 10px 40px;
+  border-radius: 25px;
   font-weight: bold;
-  border-radius: 20px;
   cursor: pointer;
-  text-transform: uppercase;
+  transition: background 0.3s;
+}
+
+.footer {
+  text-align: center;
+  background-color: #2e7d32;
+  color: white;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 40px;
 }
 </style>
 

@@ -22,10 +22,12 @@
         <div class="text-wrapper">Talleres</div>
       </div>
     </RouterLink>
-    <div v-if="privilegios" class="menu-item">
-      <img class="vector-3" src="@/assets/vector.svg" />
-      <div class="text-wrapper">Gestionar talleres</div>
-    </div>
+    <RouterLink to="/createTaller">
+      <div v-if="privilegios" class="menu-item">
+        <img class="vector-3" src="@/assets/vector.svg" />
+        <div class="text-wrapper">Crear talleres</div>
+      </div>
+    </RouterLink>
   </div>
 </template>
 

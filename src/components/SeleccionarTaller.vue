@@ -167,7 +167,7 @@ export default {
 
 .section-title {
   text-align: center;
-  font-size: 24px;
+  font-size: 40px;
   font-weight: bold;
   margin: 30px 0;
   text-transform: uppercase;

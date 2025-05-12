@@ -97,12 +97,18 @@ export default {
       }
 
       try {
+        const getAdminId = () => {
+          const user = JSON.parse(localStorage.getItem('user'));
+          return user ? user.codigo_udg : null;
+        }
+        const admin_ID =  getAdminId();
         // Construcción de FormData para enviar el archivo
         const formData = new FormData();
         formData.append('nombre_taller', this.form.nombre);
         formData.append('descripcion', this.form.descripcion);
         formData.append('fecha', this.form.diaInicio);
         formData.append('horario', this.form.horario);
+        formData.append('admin_ID', admin_ID);
         formData.append('imagen', this.form.imagen); // Aquí se envía la imagen
 
         const response = await axios.post('http://localhost:3002/taller/crearTaller', formData, {

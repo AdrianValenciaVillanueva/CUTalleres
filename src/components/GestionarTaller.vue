@@ -1,64 +1,46 @@
 <template>
-  <div class="talleres-app">
-    <header class="header">
-      <div class="logo">
-        <img src="@/assets/Cutalleres logo prototipo naranja-azul sin fondo 1.png" alt="CTalleres Logo" />
-      </div>
-      <nav class="navigation">
-        <a href="#" class="nav-link">Lista de talleres</a>
-        <a href="#" class="nav-link dropdown">
-          Mis talleres
-          <span class="dropdown-arrow">▼</span>
-        </a>
-        <a href="#" class="nav-link dropdown">
-          Perfil
-          <span class="dropdown-arrow">▼</span>
-        </a>
-      </nav>
-    </header>
+  <div class="gestion-container"> <!-- Contenedor raíz para evitar problemas con Transition -->
+    <div class="talleres-app">
+      <main class="main-content">
+        <section class="taller-management">
+          <h1 class="management-title">GESTIÓN DEL TALLER</h1>
+          <div class="taller-name">
+            <h2>{{ taller.nombre }}</h2>
+          </div>
 
-    <main class="main-content">
-      <section class="taller-management">
-        <h1 class="management-title">GESTIÓN DEL TALLER</h1>
-        <div class="taller-name">
-          <h2>{{ taller.nombre }}</h2>
-        </div>
-
-        <div class="taller-content-area">
-          <h3>Lista de alumnos</h3>
-          <table class="alumnos-table">
-            <thead>
-              <tr>
-                <th>Nombre completo</th>
-                <th>Correo institucional</th>
-                <th>Certificado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="alumno in alumnos" :key="alumno.id">
-                <td>{{ alumno.nombre }}</td>
-                <td>{{ alumno.correo }}</td>
-                <td>
-                  <input type="file" @change="handleFileUpload($event, alumno.id)" />
-                  <span v-if="alumno.certificado" class="success-message">✔ Certificado subido</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button class="btn-finalizar" @click="finalizarTaller">Terminar Taller</button>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <p>© CUTalleres</p>
-      <p>Universidad de Guadalajara - Centro Universitario de Tonalá</p>
-    </footer>
+          <div class="taller-content-area">
+            <h3>Lista de alumnos</h3>
+            <table class="alumnos-table">
+              <thead>
+                <tr>
+                  <th>Nombre completo</th>
+                  <th>Correo institucional</th>
+                  <th>Certificado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="alumno in alumnos" :key="alumno.id">
+                  <td>{{ alumno.nombre }}</td>
+                  <td>{{ alumno.correo }}</td>
+                  <td>
+                    <input type="file" @change="handleFileUpload($event, alumno.id)" />
+                    <span v-if="alumno.certificado" class="success-message">✔ Certificado subido</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="btn-finalizar" @click="finalizarTaller">Finalizar taller</button>
+          </div>
+        </section>
+      </main>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Swal from 'sweetalert2';
+
 
 export default {
   name: 'TalleresApp',
@@ -108,11 +90,81 @@ export default {
         alert('Hubo un error al subir el certificado.');
       }
     },
-    finalizarTaller() {
-      alert("El taller ha sido finalizado.");
+
+    //Metodo para concluir el taller
+    async finalizarTaller() {
+      const id = localStorage.getItem('tallerSeleccionado');
+
+      if (!id) {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "No se encontró el ID del taller.",
+        });
+        return;
+      }
+      //Confirmación antes de finalizar
+      const confirmacion = await Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Esta acción marcará el taller como concluido.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sí",
+        cancelButtonText: "Cancelar",
+      });
+
+      if (confirmacion.isConfirmed) {
+        try {
+          const response = await axios.patch("http://localhost:3002/taller/concluirTaller", {
+            ID_Taller: id
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Taller Finalizado",
+            text: response.data.message,
+          });
+
+        console.log("Taller finalizado:", response.data);
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: error.response?.data?.error || "Hubo un problema al finalizar el taller.",
+          });
+          console.error("Error al finalizar el taller:", error);
+        }
+      }
+    },
+
+    
+  //Se obtienen los datos del taller gracias al ID
+  async obtenerDatosTaller(id) {
+    try {
+      const response = await axios.post('http://localhost:3002/taller/vistaTaller', {
+        ID_Taller: id
+      });
+
+      this.taller = response.data; //Guarda los datos en el objeto taller
+    } catch (error) {
+      console.error('Error al obtener la información del taller:', error);
     }
   }
+
+
+  },
+  mounted() {
+      //Se obtiene el ID del localStorage
+      const idTaller = localStorage.getItem('tallerSeleccionado');
+      console.log("ID recuperado de localStorage:", idTaller);
+      if (idTaller) {
+        this.obtenerDatosTaller(idTaller);
+
+      }
+  },
+
 };
+
 </script>
 
 <style scoped>
@@ -194,6 +246,7 @@ export default {
 }
 
 .btn-finalizar {
+  margin-top: 30px;
   background-color: #2e7d32;
   color: white;
   font-size: 18px;

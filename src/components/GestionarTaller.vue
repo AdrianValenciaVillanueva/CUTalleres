@@ -117,22 +117,24 @@ export default {
 
 <style scoped>
 .talleres-app {
-  font-family: Arial, sans-serif;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f0fff0;
+  color: #333;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .header {
+  background-color: #4caf50;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  background-color: #f8f8f8;
-  padding: 10px 20px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 15px;
+  border-radius: 8px;
 }
 
-.logo {
-  height: 40px;
+.logo img {
+  height: 35px;
 }
 
 .navigation {
@@ -141,76 +143,79 @@ export default {
 }
 
 .nav-link {
-  margin-left: 20px;
   text-decoration: none;
-  color: #333;
+  color: white;
   font-size: 16px;
-}
-
-.dropdown {
-  display: flex;
-  align-items: center;
-}
-
-.dropdown-arrow {
-  font-size: 10px;
-  margin-left: 5px;
+  font-weight: bold;
+  margin: 0 15px;
 }
 
 .main-content {
+  max-width: 900px;
+  margin: auto;
   padding: 20px;
 }
 
 .taller-management {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
 }
 
 .management-title {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  margin-bottom: 5px;
+  color: #2e7d32;
 }
 
 .taller-name {
-  font-size: 18px;
-  margin-bottom: 20px;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
 .taller-content-area {
-  width: 90%;
-  background-color: #e9e9e9;
-  border-radius: 6px;
+  background-color: #f4f4f4;
   padding: 20px;
+  border-radius: 8px;
 }
 
 .alumnos-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
 }
 
 .alumnos-table th,
 .alumnos-table td {
-  border: 1px solid #000;
-  padding: 8px;
-  text-align: center;
-}
-
-.btn-finalizar {
-  background-color: #6fef6f;
-  color: #000;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  cursor: pointer;
+  border: 1px solid #ddd;
+  padding: 10px;
 }
 
 .success-message {
   color: green;
   font-weight: bold;
+}
+
+.btn-finalizar {
+  background-color: #2e7d32;
+  color: white;
+  font-size: 18px;
+  padding: 10px 40px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-finalizar:hover {
+  background-color: #1b5e20;
+}
+
+.footer {
+  text-align: center;
+  background-color: #2e7d32;
+  color: white;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 40px;
 }
 </style>
 
